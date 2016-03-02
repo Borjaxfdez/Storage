@@ -1,0 +1,94 @@
+<html>
+<head><title>BEER COUNT</title>
+<style>
+#session, #r1, #sb1, #sb2, #sb3{
+	color:blue;
+}
+#local, #r2, #g{
+	color: red;
+}
+</style>
+<script>
+var b=0;
+var h=0;
+var p=0;
+function cargar(){
+if(localStorage.getItem("L1")==null && localStorage.getItem("L2")==null && localStorage.getItem("L3")==null){
+	for(i=1;i<4;i++){
+		localStorage.setItem("L"+i,0);
+	}
+}
+else{
+	for(i=1;i<4;i++){
+		document.getElementById("la"+i).value=localStorage.getItem("L"+i);
+		document.getElementById("ld"+i).innerHTML="LLEVA: "+localStorage.getItem("L"+i);
+	}
+	}
+}
+function addS(str){
+var id=str.substring(3,2);
+var valor="D"+id;
+sessionStorage.setItem("D1",b);
+sessionStorage.setItem("D2",h);
+sessionStorage.setItem("D3",p);
+	if(id==1){
+			b+=1;
+			sessionStorage.setItem(valor,b);
+	}
+	if(id==2){
+			h+=1;
+			sessionStorage.setItem(valor,h);
+	}
+	if(id==3){
+			p+=1;
+			sessionStorage.setItem(valor,p);
+	}
+	for(i=1;i<4;i++){
+		document.getElementById("sa"+i).value=sessionStorage.getItem(("D"+i));
+		document.getElementById("sd"+i).innerHTML="LLEVA: "+sessionStorage.getItem("D"+i);
+	}	
+}
+function borrar(){
+	sessionStorage.clear();
+	location.reload();
+}
+function guardar(){
+	for(i=1;i<4;i++){
+		localStorage.setItem("L"+i,(parseInt(localStorage.getItem("L"+i)))+parseInt(sessionStorage.getItem("D"+i)));
+		document.getElementById("la"+i).value=parseInt(localStorage.getItem("L"+i));
+		document.getElementById("ld"+i).innerHTML="LLEVA: "+parseInt(localStorage.getItem("L"+i));
+	}
+	borrar();
+}
+function borrarL(){
+	localStorage.clear();
+	location.reload();
+}
+</script>
+</head>
+<body onLoad="javascript:cargar();">
+<div id="session">
+BENDER<progress id="sa1" max="20" value="0"></progress><div id="sd1">LLEVA: 0</div>
+HOMER<progress id="sa2" max="20" value="0"></progress><div id="sd2">LLEVA: 0</div>
+PETER<progress id="sa3" max="20" value="0"></progress><div id="sd3">LLEVA: 0</div>
+</div>
+<br>
+<div id="session">SESSION<br><br>
+<button id="sb1" onClick="addS(this.id);">BENDER BEBE</button>
+<button id="sb2" onClick="addS(this.id);">HOMER BEBE</button>
+<button id="sb3" onClick="addS(this.id);">PETER BEBE</button>
+<div>
+<br>
+<button id="g" onClick="javascript:guardar();">GUARDAR</button>
+<button id="r1" onClick="javascript:borrar();">RESTAURAR VALORES</button>
+<br><br>
+<div id="local">
+LOCAL<br><br>
+BENDER<progress id="la1" max="100" value="0"></progress><div id="ld1">LLEVA: 0</div>
+HOMER<progress id="la2" max="100" value="0"></progress><div id="ld2">LLEVA: 0</div>
+PETER<progress id="la3" max="100" value="0"></progress><div id="ld3">LLEVA: 0</div>
+<br><br>
+<button id="r2" onClick="javascript:borrarL();">RESTAURAR VALORES</button>
+</div>
+</body>
+</html>
